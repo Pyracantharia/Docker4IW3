@@ -1,0 +1,9 @@
+services:
+  frontend:
+    build:
+      target: development
+    ports:
+      - "8080:8080" # Vue Dev Server
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Prevent node_modules from being overwritten
