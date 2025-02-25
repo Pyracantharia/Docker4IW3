@@ -1,0 +1,14 @@
+services:
+  frontend:
+    container_name: frontend
+    build: 
+      context: ./frontend
+      target: production
+    ports:
+      - "8081:80" # changement de port pour nginx sur port 80
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
