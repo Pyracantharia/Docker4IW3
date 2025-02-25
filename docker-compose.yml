@@ -1,8 +1,9 @@
 services:
   frontend:
+    container_name: frontend
     build: 
       context: ./frontend
-      target: ${TARGET}
+      target: production
     environment:
       VITE_PRODUCT_SERVICE_URL: ${VITE_PRODUCT_SERVICE_URL}
       VITE_AUTH_SERVICE_URL: ${VITE_AUTH_SERVICE_URL}
@@ -10,10 +11,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       MONGODB_URI: ${MONGODB_URI}
     ports:
-      - "8080:8080"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules # anonymous volume to prevent node_modules from being overwritten
+      - "8081:80"
     networks:
       - app-network
 
