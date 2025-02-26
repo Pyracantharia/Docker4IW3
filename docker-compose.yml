@@ -4,6 +4,8 @@ services:
     build: 
       context: ./frontend
       target: production
+    env_file:
+      - ./frontend/.env.production
     environment:
       VITE_PRODUCT_SERVICE_URL: ${VITE_PRODUCT_SERVICE_URL}
       VITE_AUTH_SERVICE_URL: ${VITE_AUTH_SERVICE_URL}
@@ -14,6 +16,39 @@ services:
       - "8081:80"
     networks:
       - app-network
+    
+  auth-service:
+    container_name: auth-service
+    build: 
+      context: ./services/auth-service
+      target: production
+    env_file:
+      - ./services/auth-service/.env.production
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+
+  #base de donnée mongodb
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: admin
+    #   MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongo_data:
 
 networks:
   app-network:

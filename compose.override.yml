@@ -7,3 +7,13 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules # Prevent node_modules from being overwritten
+
+  auth-service:
+    build: 
+      target: development
+    env_file:
+      - ./services/auth-service/.env
+    volumes:
+      - ./services/auth-service:/app
+      - /app/node_modules # Prevent node_modules from being overwritten
+    
