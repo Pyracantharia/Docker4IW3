@@ -28,6 +28,13 @@ services:
     volumes:
       - ./scripts/init-products.sh:/app/init-products.sh
 
+  order-service:
+      build: 
+        context: ./services/order-service
+        target: production
+      env_file:
+        - ./services/order-service/.env.production
+
 networks:
   app-network:
     driver: bridge
