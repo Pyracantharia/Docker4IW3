@@ -19,6 +19,15 @@ services:
     env_file:
       - ./services/auth-service/.env.production
 
+  product-service:
+    build: 
+      context: ./services/product-service
+      target: production
+    env_file:
+      - ./services/product-service/.env
+    volumes:
+      - ./scripts/init-products.sh:/app/init-products.sh
+
 networks:
   app-network:
     driver: bridge
