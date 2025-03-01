@@ -25,12 +25,29 @@ services:
     env_file:
       - ./services/auth-service/.env.production
     environment:
-      MONGODB_URI: ${MONGODB_URI}
+      MONGODB_URI: ${MONGODB_URI}/auth
       JWT_SECRET: ${JWT_SECRET}
     ports:
       - "3001:3001"
     networks:
       - app-network
+
+  product-service:
+    container_name: product-service
+    build: 
+      context: ./services/product-service
+      target: production
+    env_file:
+      - ./services/product-service/.env.production
+    environment:
+      MONGODB_URI: ${MONGODB_URI}/ecommerce
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "3002:3000"
+    networks:
+      - app-network 
+    volumes:
+      - ./scripts/init-products.sh:/app/init-products.sh
 
   #base de donnée mongodb
   mongodb:

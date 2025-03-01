@@ -16,4 +16,14 @@ services:
     volumes:
       - ./services/auth-service:/app
       - /app/node_modules # Prevent node_modules from being overwritten
+
+  product-service:
+    build: 
+      target: development
+    env_file:
+      - ./services/product-service/.env
+    volumes:
+      - ./services/product-service:/app
+      - /app/node_modules
+      - ./scripts/init-products.sh:/app/init-products.sh
     
