@@ -1,6 +1,12 @@
+ # PREREQUIS
+
+- Installer Docker
+- Installer Docker-compose
+- Installer Node.js 22 pour les developpeurs
+
 # AJOUT D'UN SERVICE
 
-- Lancer la commande ``npm run dev`` dans le dossier frontend et dans le dossier de chaque service pour générer un package-lock.json
+- Lancer la commande ``npm install`` dans le dossier frontend et dans le dossier de chaque service pour générer un package-lock.json
 
 - Créer un dockerfile à la racine du dossier du service
 
@@ -15,3 +21,9 @@
 - Surcharger à nouveau le container du service en mode dans ``compose.prod.yml`` de la même manière que dans ``compose.override.yml`` mais avec les bonnes variables et chemin pour la prod.
 
 **NOTE**: Décommenter le block du service sur lequel vous comptez travailler dans ``./frontend/nginx.conf`` pour activer la communication du frontend avec le service.
+
+# LANCER LE PROJET EN MODE DEV
+
+- Lancer la commande ``npm install`` dans chaque service pour générer un package-lock.json ( dans le dossier de chaque service)
+
+- Lancer la commande ``docker compose up --build -d`` à la racine du projet pour lancer le projet en mode dev
