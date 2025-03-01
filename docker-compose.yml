@@ -49,6 +49,21 @@ services:
     volumes:
       - ./scripts/init-products.sh:/app/init-products.sh
 
+  order-service:
+    container_name: order-service
+    build: 
+      context: ./services/order-service
+      target: production
+    env_file:
+      - ./services/order-service/.env.production
+    environment:
+      MONGODB_URI: ${MONGODB_URI}/orders
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "3003:3003"
+    networks:
+      - app-network
+
   #base de donnée mongodb
   mongodb:
     image: mongo:latest

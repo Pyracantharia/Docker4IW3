@@ -17,6 +17,15 @@ services:
       - ./services/auth-service:/app
       - /app/node_modules # Prevent node_modules from being overwritten
 
+  order-service:
+      build: 
+        target: development
+      env_file:
+        - ./services/order-service/.env
+      volumes:
+        - ./services/order-service:/app
+        - /app/node_modules
+
   product-service:
     build: 
       target: development
