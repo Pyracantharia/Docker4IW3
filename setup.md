@@ -27,3 +27,7 @@
 - Lancer la commande ``npm install`` dans chaque service pour générer un package-lock.json ( dans le dossier de chaque service)
 
 - Lancer la commande ``docker compose up --build -d`` à la racine du projet pour lancer le projet en mode dev
+
+# LANCER LE PROJET EN MODE PROD
+
+- docker compose -f docker-compose.yml -f compose.prod.yml up --build -d
