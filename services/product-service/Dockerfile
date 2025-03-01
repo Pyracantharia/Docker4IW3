@@ -1,5 +1,7 @@
 FROM node:22-alpine AS base
 
+RUN apk add --no-cache curl
+
 WORKDIR /app
 # on copie tout avant de faire le npm install comme ça meme si package.json est dans un sous dossier il est quand meme copié	
 COPY . . 
@@ -7,7 +9,7 @@ RUN npm install
 
 FROM base AS development
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
+CMD sh -c "sh /app/init-products.sh & npm run dev"
 
 FROM node:18 AS production
 WORKDIR /app
