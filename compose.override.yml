@@ -13,6 +13,8 @@ services:
       target: development
     env_file:
       - ./services/auth-service/.env
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
     volumes:
       - ./services/auth-service:/app
       - /app/node_modules # Prevent node_modules from being overwritten
@@ -22,6 +24,8 @@ services:
         target: development
       env_file:
         - ./services/order-service/.env
+      environment:
+        JWT_SECRET: ${JWT_SECRET}
       volumes:
         - ./services/order-service:/app
         - /app/node_modules
@@ -31,6 +35,8 @@ services:
       target: development
     env_file:
       - ./services/product-service/.env
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
     volumes:
       - ./services/product-service:/app
       - /app/node_modules
