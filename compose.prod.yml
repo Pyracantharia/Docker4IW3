@@ -18,6 +18,8 @@ services:
       target: production
     env_file:
       - ./services/auth-service/.env.production
+    environment:
+          JWT_SECRET: ${JWT_SECRET}
 
   product-service:
     build: 
@@ -25,6 +27,8 @@ services:
       target: production
     env_file:
       - ./services/product-service/.env
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
     volumes:
       - ./scripts/init-products.sh:/app/init-products.sh
 
@@ -34,6 +38,8 @@ services:
         target: production
       env_file:
         - ./services/order-service/.env.production
+      environment:
+        JWT_SECRET: ${JWT_SECRET}
 
 networks:
   app-network:
