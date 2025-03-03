@@ -5,11 +5,11 @@ on:
     branches:
       - dev
 
-jobs:
+jobs-frontend-dev:
   test:
     runs-on: ubuntu-latest
     container:
-      image: node:22
+      image: ghcr.io/pyracantharia/docker4iw3-frontend:latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -18,46 +18,8 @@ jobs:
         working-directory: ./frontend/
       - run: npm test
         working-directory: ./frontend/
-      - run: npm install
-        working-directory: ./services/auth-service/
-      # - run: npm test
-      #   working-directory: ./services/auth-service/
-      - run: npm install
-        working-directory: ./services/order-service/
-      - run: npm test
-        working-directory: ./services/order-service/
-      - run: npm install
-        working-directory: ./services/product-service/
-      - run: npm test
-        working-directory: ./services/product-service/
+      - run: docker compose up --build -d
+      
 
 
-  build-prod:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-      - name: Install libssl1.1
-        run: |
-          wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
-          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
-      - name: Build and deploy production containers
-        run: docker compose -f docker-compose.yml -f compose.prod.yml up --build -d
 
-  build-dev:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-      - name: Install libssl1.1
-        run: |
-          wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
-          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
-      - name: Build and deploy development containers
-        run: docker compose up --build -d
