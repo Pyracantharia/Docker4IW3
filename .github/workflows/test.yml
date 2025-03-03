@@ -8,18 +8,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/pyracantharia/docker4iw3-frontend:latest
     steps:
       - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: '22'
       - run: npm install
         working-directory: ./frontend/
       - run: npm test
         working-directory: ./frontend/
       - run: docker compose up --build -d
-      
-
-
-
