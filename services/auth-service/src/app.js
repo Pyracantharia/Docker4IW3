@@ -3,11 +3,14 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './config/database.js';
 import authRoutes from './routes/authRoutes.js';
+import logger from "./logger.js";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+
+logger.info(`Auth service starting with NODE_ENV=${process.env.NODE_ENV}`);
 
 // Ne pas connecter MongoDB si en mode test
 if (process.env.NODE_ENV !== 'test') {
@@ -20,6 +23,12 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());
+
+// on log chaque requête entrante 
+app.use((req, res, next) => {
+  logger.info(`Requête reçue: ${req.method} ${req.originalUrl}`);
+  next();
+});
 
 app.use('/api/auth', authRoutes);
 // Middleware pour le logging des requêtes
@@ -41,6 +50,13 @@ app.get('/api/health', (req, res) => {
 app.get('/api/auth/ping', (req, res) => {
   res.json({ message: 'Auth service is reachable' });
 });
+
+// on gère les erreurs globales
+app.use((err, req, res, next) => {
+  logger.error(`Erreur serveur: ${err.message}`);
+  res.status(500).json({ error: "Erreur interne du serveur" });
+});
+
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
     console.log(`Auth service running on port ${port}`);
