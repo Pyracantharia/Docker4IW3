@@ -32,7 +32,7 @@ jobs:
         working-directory: ./services/product-service/
         
 # Job pour la production
-jobs:
+jobs-prod:
   build:
     runs-on: ubuntu-latest
     container:
@@ -44,7 +44,7 @@ jobs:
       - run: docker compose -f docker-compose.yml -f compose.prod.yml up --build -d
 
 # Job pour la dev
-jobs:
+jobs-dev:
   build:
     runs-on: ubuntu-latest
     container:
