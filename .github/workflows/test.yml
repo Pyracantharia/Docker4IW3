@@ -1,0 +1,56 @@
+name: Test Project
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: node:22
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          node-version: 22
+      - run: npm install
+        working-directory: ./frontend/
+      - run: npm  test
+        working-directory: ./frontend/   
+      - run: npm install
+        working-directory: ./services/auth-service/
+      - run: npm  test
+        working-directory: ./services/auth-service/
+      - run: npm install
+        working-directory: ./services/order-service/
+      - run: npm  test
+        working-directory: ./services/order-service/
+      - run: npm install
+        working-directory: ./services/product-service/
+      - run: npm  test
+        working-directory: ./services/product-service/
+        
+# Job pour la production
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:22
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          node-version: 22
+      - run: docker compose -f docker-compose.yml -f compose.prod.yml up --build -d
+
+# Job pour la dev
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:22
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          node-version: 22
+      - run: docker compose up --build -d
