@@ -14,19 +14,25 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22'
+
       - run: npm install
         working-directory: ./frontend/
+      - run: npm install
+        working-directory: ./services/auth-service/
+      - run: npm install
+        working-directory: ./services/order-service/
+      - run: npm install
+        working-directory: ./services/product-service/
 
       - run: npm test
         working-directory: ./frontend/
-
-      - run: npm install
+      - run: npm test
         working-directory: ./services/auth-service/
-
-      - run: npm install
+      - run: npm test
         working-directory: ./services/order-service/
-
-      - run: npm install
+      - run: npm test
         working-directory: ./services/product-service/
-        
-      - run: docker compose up --build -d
+
+      - run: docker compose -f docker-compose.yml -f compose.prod.yml up --build -d
+
+
