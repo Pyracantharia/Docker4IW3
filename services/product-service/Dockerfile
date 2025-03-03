@@ -2,6 +2,8 @@ FROM node:22-alpine AS base
 
 RUN apk add --no-cache curl
 
+LABEL org.opencontainers.image.source="https://github.com/Pyracantharia/Docker4IW3"
+
 WORKDIR /app
 # on copie tout avant de faire le npm install comme ça meme si package.json est dans un sous dossier il est quand meme copié	
 COPY . . 
