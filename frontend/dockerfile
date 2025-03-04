@@ -1,12 +1,20 @@
 # image de base
 FROM node:22-alpine AS base
 
+LABEL org.opencontainers.image.source="https://github.com/Pyracantharia/Docker4IW3"
+
 WORKDIR /app
 COPY . .
 RUN npm install
+# RUN apk add --no-cache wget \
+#     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.16/gosu-amd64" \
+#     && chmod +x /usr/local/bin/gosu \
+#     && addgroup -S appgroup && adduser -S appuser -G appgroup \
+#     && chown -R appuser:appgroup /app
 
 # image de developpement
 FROM base AS development
+# USER appuser
 EXPOSE 8080
 CMD ["npm", "run", "dev"]
 

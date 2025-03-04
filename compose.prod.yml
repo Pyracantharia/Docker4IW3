@@ -4,10 +4,42 @@ services:
     build: 
       context: ./frontend
       target: production
+    env_file:
+        - ./frontend/.env.production
     ports:
       - "8081:80" # changement de port pour nginx sur port 80
     networks:
       - app-network
+    
+  auth-service:
+    container_name: auth-service
+    build: 
+      context: ./services/auth-service
+      target: production
+    env_file:
+      - ./services/auth-service/.env.production
+    environment:
+          JWT_SECRET: ${JWT_SECRET}
+
+  product-service:
+    build: 
+      context: ./services/product-service
+      target: production
+    env_file:
+      - ./services/product-service/.env
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - ./scripts/init-products.sh:/app/init-products.sh
+
+  order-service:
+      build: 
+        context: ./services/order-service
+        target: production
+      env_file:
+        - ./services/order-service/.env.production
+      environment:
+        JWT_SECRET: ${JWT_SECRET}
 
 networks:
   app-network:
