@@ -8,15 +8,15 @@ WORKDIR /app
 # on copie tout avant de faire le npm install comme ça meme si package.json est dans un sous dossier il est quand meme copié	
 COPY . . 
 RUN npm install
-# RUN apk add --no-cache wget \
-#     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.16/gosu-amd64" \
-#     && chmod +x /usr/local/bin/gosu \
-#     && addgroup -S appgroup && adduser -S appuser -G appgroup \
-#     && chown -R appuser:appgroup /app
+RUN apk add --no-cache wget \
+    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.16/gosu-amd64" \
+    && chmod +x /usr/local/bin/gosu \
+    && addgroup -S appgroup && adduser -S appuser -G appgroup \
+    && chown -R appuser:appgroup /app
 
 FROM base AS development
 EXPOSE 3000
-# USER appuser
+USER appuser
 CMD sh -c "sh /app/init-products.sh & npm run dev"
 
 FROM node:18 AS production
