@@ -31,3 +31,7 @@
 # LANCER LE PROJET EN MODE PROD
 
 - docker compose -f docker-compose.yml -f compose.prod.yml up --build -d
+
+# quand on va push sur le repo git, le pipeline va se déclencher et va build l'image et la push sur le registry
+
+- Les images sont disponibles pour les collaborateurs du repo git

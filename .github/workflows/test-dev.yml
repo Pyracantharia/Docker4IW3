@@ -1,0 +1,54 @@
+name: Test Project
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install libssl1.1 for mongodb-memory-server
+        run: |
+          wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+
+      - run: npm install
+        working-directory: ./frontend/
+      - run: npm install
+        working-directory: ./services/auth-service/
+      - run: npm install
+        working-directory: ./services/order-service/
+      - run: npm install
+        working-directory: ./services/product-service/
+
+      - run: npm test
+        working-directory: ./frontend/
+      - run: npm test
+        working-directory: ./services/auth-service/
+      - run: npm test
+        working-directory: ./services/order-service/
+      - run: npm test
+        working-directory: ./services/product-service/
+
+      - run: docker compose up --build -d
+
+
+      - name: Tag and push images to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker tag docker4iw3-frontend ghcr.io/pyracantharia/docker4iw3-frontend:latest
+          docker tag docker4iw3-auth-service ghcr.io/pyracantharia/docker4iw3-auth-service:latest
+          docker tag docker4iw3-order-service ghcr.io/pyracantharia/docker4iw3-order-service:latest
+          docker tag docker4iw3-product-service ghcr.io/pyracantharia/docker4iw3-product-service:latest
+          docker push ghcr.io/pyracantharia/docker4iw3-frontend:latest
+          docker push ghcr.io/pyracantharia/docker4iw3-auth-service:latest
+          docker push ghcr.io/pyracantharia/docker4iw3-order-service:latest
+          docker push ghcr.io/pyracantharia/docker4iw3-product-service:latest
