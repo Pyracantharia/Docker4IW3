@@ -40,4 +40,14 @@ jobs:
 
       - run: docker compose -f docker-compose.yml -f compose.prod.yml up --build -d
 
-
+      - name: Tag and push images to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker tag docker4iw3-frontend ghcr.io/pyracantharia/docker4iw3-frontend-prod:latest
+          docker tag docker4iw3-auth-service ghcr.io/pyracantharia/docker4iw3-auth-service-prod:latest
+          docker tag docker4iw3-order-service ghcr.io/pyracantharia/docker4iw3-order-service-prod:latest
+          docker tag docker4iw3-product-service ghcr.io/pyracantharia/docker4iw3-product-service-prod:latest
+          docker push ghcr.io/pyracantharia/docker4iw3-frontend-prod:latest
+          docker push ghcr.io/pyracantharia/docker4iw3-auth-service-prod:latest
+          docker push ghcr.io/pyracantharia/docker4iw3-order-service-prod:latest
+          docker push ghcr.io/pyracantharia/docker4iw3-product-service-prod:latest
